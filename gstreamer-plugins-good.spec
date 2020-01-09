@@ -6,7 +6,7 @@
 
 Name:           %{gstreamer}-plugins-good
 Version:        0.10.23
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        GStreamer plug-ins with good code and licensing
 
 Group:          Applications/Multimedia
@@ -107,7 +107,7 @@ This is a dummy package to make gstreamer-plugins-good multilib.
   --disable-gtk-doc \
   --enable-experimental \
   --disable-monoscope \
-  --disable-esd --disable-libcaca --disable-aalib \
+  --disable-esd --disable-libcaca --disable-aalib --disable-flx \
   --with-default-visualizer=autoaudiosink
 
 make %{?_smp_mflags}
@@ -154,7 +154,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/gstreamer-%{majorminor}/libgsteffectv.so
 %{_libdir}/gstreamer-%{majorminor}/libgstequalizer.so
 %{_libdir}/gstreamer-%{majorminor}/libgstflv.so
-%{_libdir}/gstreamer-%{majorminor}/libgstflxdec.so
 %{_libdir}/gstreamer-%{majorminor}/libgstgoom2k1.so
 %{_libdir}/gstreamer-%{majorminor}/libgstgoom.so
 %{_libdir}/gstreamer-%{majorminor}/libgsticydemux.so
@@ -233,6 +232,10 @@ export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
 gconftool-2 --makefile-install-rule %{_sysconfdir}/gconf/schemas/gstreamer-%{majorminor}.schemas > /dev/null || :
 
 %changelog
+* Tue Dec 06 2016 Wim Taymans <wtaymans@redhat.com> 0.10.23-4
+- Remove insecure FLX plugin
+Resolves: rhbz#1400835
+
 * Wed Nov 19 2014 Wim Taymans <wtaymans@redhat.com> 0.10.23-2
 - add patch to post provide-clock message to fix a major regression
   in 0.10.23
