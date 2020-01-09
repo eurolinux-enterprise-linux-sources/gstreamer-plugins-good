@@ -6,7 +6,7 @@
 
 Name:           %{gstreamer}-plugins-good
 Version:        0.10.23
-Release:        1%{?dist}
+Release:        3%{?dist}
 Summary:        GStreamer plug-ins with good code and licensing
 
 Group:          Applications/Multimedia
@@ -14,6 +14,8 @@ License:        LGPLv2+
 URL:            http://gstreamer.freedesktop.org/
 Source:         http://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+# cherry picked to fix https://bugzilla.redhat.com/show_bug.cgi?id=622776
+Patch1:         0001-pulsesink-Post-provide-clock-message-on-the-bus-if-t.patch
 
 Requires:       %{gstreamer} >= %{_gst}
 Requires(pre):  GConf2 
@@ -95,6 +97,7 @@ This is a dummy package to make gstreamer-plugins-good multilib.
 
 %prep
 %setup -q -n gst-plugins-good-%{version}
+%patch1 -p1
 
 %build
 
@@ -230,6 +233,12 @@ export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
 gconftool-2 --makefile-install-rule %{_sysconfdir}/gconf/schemas/gstreamer-%{majorminor}.schemas > /dev/null || :
 
 %changelog
+* Wed Nov 19 2014 Wim Taymans <wtaymans@redhat.com> 0.10.23-2
+- add patch to post provide-clock message to fix a major regression
+  in 0.10.23
+- bump version to rebuild for fastrack
+Resolves: rhbz#622776
+
 * Thu Jun 17 2010 Benjamin Otte <otte@redhat.com> 0.10.23-1
 - Update to 0.10.23
 - Sync with Fedora packages

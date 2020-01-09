@@ -1,0 +1,38 @@
+From 8d94c66a3d52a1cdd9e1ec510af7f22d90451ff7 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Sebastian=20Dr=C3=B6ge?= <sebastian.droege@collabora.co.uk>
+Date: Wed, 2 Jun 2010 10:52:56 +0200
+Subject: [PATCH] pulsesink: Post provide-clock message on the bus if the clock
+ appears/disappears
+
+Fixes bug #620277.
+---
+ ext/pulse/pulsesink.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/ext/pulse/pulsesink.c b/ext/pulse/pulsesink.c
+index 8d5f0fe..08a1d7e 100644
+--- a/ext/pulse/pulsesink.c
++++ b/ext/pulse/pulsesink.c
+@@ -2323,6 +2323,9 @@ gst_pulsesink_change_state (GstElement * element, GstStateChange transition)
+       GST_BASE_AUDIO_SINK (pulsesink)->provided_clock =
+           gst_audio_clock_new ("GstPulseSinkClock",
+           (GstAudioClockGetTimeFunc) gst_pulsesink_get_time, pulsesink);
++      gst_element_post_message (element,
++          gst_message_new_clock_provide (GST_OBJECT_CAST (element),
++              GST_BASE_AUDIO_SINK (pulsesink)->provided_clock, TRUE));
+       break;
+     default:
+       break;
+@@ -2332,6 +2335,9 @@ gst_pulsesink_change_state (GstElement * element, GstStateChange transition)
+ 
+   switch (transition) {
+     case GST_STATE_CHANGE_READY_TO_NULL:
++      gst_element_post_message (element,
++          gst_message_new_clock_provide (GST_OBJECT_CAST (element), NULL,
++              FALSE));
+       if (GST_BASE_AUDIO_SINK (pulsesink)->provided_clock)
+         gst_object_unref (GST_BASE_AUDIO_SINK (pulsesink)->provided_clock);
+       GST_BASE_AUDIO_SINK (pulsesink)->provided_clock = NULL;
+-- 
+1.9.3
+
