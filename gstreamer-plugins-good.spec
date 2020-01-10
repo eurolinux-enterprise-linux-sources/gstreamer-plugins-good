@@ -13,7 +13,7 @@
 
 Name:           %{gstreamer}-plugins-good
 Version:        0.10.31
-Release:        13%{?dist}
+Release:        9%{?dist}
 Summary:        GStreamer plug-ins with good code and licensing
 
 Group:          Applications/Multimedia
@@ -159,7 +159,6 @@ which are not used very much and require additional libraries to be installed.
   --disable-aalib \
   --disable-esd \
   --disable-libcaca \
-  --disable-flx \
 %if %{with extras}
   --enable-jack \
 %else
@@ -209,6 +208,7 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 %{_libdir}/gstreamer-%{majorminor}/libgsteffectv.so
 %{_libdir}/gstreamer-%{majorminor}/libgstequalizer.so
 %{_libdir}/gstreamer-%{majorminor}/libgstflv.so
+%{_libdir}/gstreamer-%{majorminor}/libgstflxdec.so
 %{_libdir}/gstreamer-%{majorminor}/libgstgoom2k1.so
 %{_libdir}/gstreamer-%{majorminor}/libgstgoom.so
 %{_libdir}/gstreamer-%{majorminor}/libgsticydemux.so
@@ -296,28 +296,6 @@ export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
 gconftool-2 --makefile-install-rule %{_sysconfdir}/gconf/schemas/gstreamer-%{majorminor}.schemas > /dev/null || :
 
 %changelog
-* Fri Aug 04 2017 Scientific Linux Auto Patch Process <SCIENTIFIC-LINUX-DEVEL@LISTSERV.FNAL.GOV>
-- Eliminated rpmbuild "bogus date" error due to inconsistent weekday,
-  by assuming the date is correct and changing the weekday.
-  Fri Feb 11 2010 --> Fri Feb 05 2010 or Thu Feb 11 2010 or Fri Feb 12 2010 or ....
-  Thu Mar 06 2010 --> Thu Mar 04 2010 or Sat Mar 06 2010 or Thu Mar 11 2010 or ....
-  Mon Apr 16 2011 --> Mon Apr 11 2011 or Sat Apr 16 2011 or Mon Apr 18 2011 or ....
-  Fri Jun 10 2012 --> Fri Jun 08 2012 or Sun Jun 10 2012 or Fri Jun 15 2012 or ....
-
-* Tue Mar 07 2017 Wim Taymans <wtaymans@redhat.com> - 0.10.31-13
-- Rebuild with correct hardening flags
-  Resolves: #1420765
-
-* Tue Dec 06 2016 Wim Taymans <wtaymans@redhat.com> - 0.10.31-12
-- Disable insecure FLX plugin
-Resolves: rhbz#1400843
-
-* Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 0.10.31-11
-- Mass rebuild 2014-01-24
-
-* Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 0.10.31-10
-- Mass rebuild 2013-12-27
-
 * Thu May 02 2013 Colin Walters <walters@verbum.org>
 - Blindly stab at the v4l2 code until it emits binaries
 
@@ -339,8 +317,7 @@ Resolves: rhbz#1400843
 * Mon Jun 11 2012 Nils Philippsen <nils@redhat.com> - 0.10.31-4
 - add extras subpackage with jack source/sink (#714481)
 
-* Sun Jun 10 2012 Hans de Goede <hdegoede@redhat.com> - 0.10.31-3
-  Fri Jun 10 2012 --> Fri Jun 08 2012 or Sun Jun 10 2012 or Fri Jun 15 2012 or ....
+* Fri Jun 10 2012 Hans de Goede <hdegoede@redhat.com> - 0.10.31-3
 - v4l2: Don't probe UVC devices for being interlaced, this saves seconds when
   starting a pipeline with a v4l2 element (rhbz#797188, gnome#677722)
 
@@ -384,8 +361,7 @@ Resolves: rhbz#1400843
 * Wed Apr 27 2011 Benjamin Otte <otte@redhat.com> 0.10.28.3-1
 - Update prerelease
 
-* Sat Apr 16 2011 Benjamin Otte <otte@redhat.com> 0.10.28.2-1
-  Mon Apr 16 2011 --> Mon Apr 11 2011 or Sat Apr 16 2011 or Mon Apr 18 2011 or ....
+* Mon Apr 16 2011 Benjamin Otte <otte@redhat.com> 0.10.28.2-1
 - Update to prerelease
 
 * Wed Feb 09 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.10.27-3
@@ -453,8 +429,7 @@ Resolves: rhbz#1400843
 * Mon Mar 08 2010 Benjamin Otte <otte@redhat.com> 0.10.19-1
 - Update to 0.10.19
 
-* Sat Mar 06 2010 Benjamin Otte <otte@redhat.com> 0.10.18.4-1
-  Thu Mar 06 2010 --> Thu Mar 04 2010 or Sat Mar 06 2010 or Thu Mar 11 2010 or ....
+* Thu Mar 06 2010 Benjamin Otte <otte@redhat.com> 0.10.18.4-1
 - Update pre-release
 
 * Thu Feb 25 2010 Benjamin Otte <otte@redhat.com> 0.10.18.3-1
@@ -466,8 +441,7 @@ Resolves: rhbz#1400843
 * Fri Feb 19 2010 Benjamin Otte <otte@redhat.com> 0.10.18.2-1
 - Update to prerelease
 
-* Thu Feb 11 2010 Benjamin Otte <otte@redhat.com> 0.10.18-1
-  Fri Feb 11 2010 --> Fri Feb 05 2010 or Thu Feb 11 2010 or Fri Feb 12 2010 or ....
+* Fri Feb 11 2010 Benjamin Otte <otte@redhat.com> 0.10.18-1
 - Update to 0.10.18
 
 * Fri Feb 05 2010 Benjamin Otte <otte@redhat.com> 0.10.17.3-1
