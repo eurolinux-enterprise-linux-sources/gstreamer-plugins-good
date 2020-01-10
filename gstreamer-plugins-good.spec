@@ -13,7 +13,7 @@
 
 Name:           %{gstreamer}-plugins-good
 Version:        0.10.31
-Release:        11%{?dist}
+Release:        12%{?dist}
 Summary:        GStreamer plug-ins with good code and licensing
 
 Group:          Applications/Multimedia
@@ -159,6 +159,7 @@ which are not used very much and require additional libraries to be installed.
   --disable-aalib \
   --disable-esd \
   --disable-libcaca \
+  --disable-flx \
 %if %{with extras}
   --enable-jack \
 %else
@@ -208,7 +209,6 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 %{_libdir}/gstreamer-%{majorminor}/libgsteffectv.so
 %{_libdir}/gstreamer-%{majorminor}/libgstequalizer.so
 %{_libdir}/gstreamer-%{majorminor}/libgstflv.so
-%{_libdir}/gstreamer-%{majorminor}/libgstflxdec.so
 %{_libdir}/gstreamer-%{majorminor}/libgstgoom2k1.so
 %{_libdir}/gstreamer-%{majorminor}/libgstgoom.so
 %{_libdir}/gstreamer-%{majorminor}/libgsticydemux.so
@@ -296,6 +296,10 @@ export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
 gconftool-2 --makefile-install-rule %{_sysconfdir}/gconf/schemas/gstreamer-%{majorminor}.schemas > /dev/null || :
 
 %changelog
+* Tue Dec 06 2016 Wim Taymans <wtaymans@redhat.com> - 0.10.31-12
+- Disable insecure FLX plugin
+Resolves: rhbz#1400842
+
 * Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 0.10.31-11
 - Mass rebuild 2014-01-24
 
